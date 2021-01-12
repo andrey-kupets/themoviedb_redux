@@ -1,25 +1,25 @@
 import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import {moviesService} from "./services";
 
 function App() {
-  return (
+    React.useEffect(() => {
+        moviesService.getMovies().then(console.log)
+    })
+
+    return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      yyyy
     </div>
   );
 }
 
 export default App;
+
+// fetch('https://api.themoviedb.org/3/discover/movie', {
+//     headers: {
+//         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMzdmNjcwOTcwMjNlNThiYzcwNDg5MTQ5YWZhNDkzYiIsInN1YiI6IjVmZmUwODQ0OGQ1MmM5MDAzZGFhOGJkZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.McIJyJDYuWqfp1ns1zjpAvIwO5KkRmuods5-pJsHQug'
+//     }
+// }).then(res => res.json()).then(console.log)
+
