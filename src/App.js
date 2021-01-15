@@ -1,17 +1,17 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import React from 'react';
 import './App.css';
-import {moviesService} from "./services";
+import { BaseLayout } from "./layouts";
+import { Home } from "./pages";
+
+// show error handler for react components
+// notifications
 
 function App() {
-    React.useEffect(() => {
-        moviesService.getMovies().then(console.log)
-    })
-
     return (
-    <div className="App">
-      yyyy
-    </div>
+    <BaseLayout>
+        <Home/>
+    </BaseLayout>
   );
 }
 
