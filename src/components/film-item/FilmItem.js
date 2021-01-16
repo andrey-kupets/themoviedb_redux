@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './FilmItem.module.css';
 
-const imgBuilder = (posterPath  ,size = 200) => `https://image.tmdb.org/t/p/w${size}${posterPath}`;
+export const imgBuilder = (posterPath  ,size = 200) => `https://image.tmdb.org/t/p/w${size}${posterPath}`;
 
 export const FilmItem = (props) => {
     // adult: false
