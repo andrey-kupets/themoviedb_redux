@@ -1,16 +1,35 @@
 // import logo from './logo.svg';
 import React from 'react';
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import './App.css';
 import { BaseLayout } from "./layouts";
-import { Home } from "./pages";
+import { Home, MovieDetails } from "./pages";
 
 // show error handler for react components
 // notifications
 
 function App() {
+    const history = useHistory();
+    // console.log(history)
     return (
     <BaseLayout>
-        <Home/>
+        <Switch>
+          <Route path='/' exact>
+             <Home/>
+          </Route>
+
+          <Route path='/movie/:id'>
+             <MovieDetails/>
+          </Route>
+
+          {/*  <Redirect to={'/'}/>*/}
+
+           <Route>
+             <h1>PAGE NOT FOUND
+                 <button onClick={() => history.push('/')}>go home</button>
+             </h1>
+           </Route>
+        </Switch>
     </BaseLayout>
   );
 }

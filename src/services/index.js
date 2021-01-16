@@ -1,3 +1,4 @@
-export * from './moviesService';
+export * from './MoviesService';
+export * from './GenresService';
 
 
