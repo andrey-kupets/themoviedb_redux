@@ -35,7 +35,7 @@ export const Home = () => {
         try {
             setIsLoading(true);
             const [movies, genres] = await Promise.all(requests)
-            console.log({movies, genres})
+            console.log({movies, genres}, "Promise.all([fetchMovies(), fetchGenres()])")
             const mergedWithGenresMovies = movies.map((movie) => {
                 const {genre_ids} = movie;
                 const movieGenresList = genre_ids.map(genreId => genres.find(el => el.id === genreId));
