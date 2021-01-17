@@ -5,8 +5,24 @@ import './App.css';
 import { BaseLayout } from "./layouts";
 import { Home, MovieDetails } from "./pages";
 
-// show error handler for react components
-// notifications
+// show error handler for react components +
+// router +
+// genres +
+// notifications +
+// pagination +
+// refactoring +
+// search -
+// redux -
+
+// today's todo list
+
+// створити інпут в хедері для пошуку
+// коли користувач тайпає і натискає сабміт або ентер
+// ми робимо запит за фільмами, які мають цей текст в назві
+
+// перенести в редакс логіку по списку фільмів, його оновленню і фетчанню
+
+
 
 function App() {
     const history = useHistory();
