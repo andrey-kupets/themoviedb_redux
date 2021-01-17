@@ -4,15 +4,51 @@ import { moviesService, genresService } from "../../services";
 import styles from './Home.module.css';
 import {useHistory} from "react-router-dom";
 
+const PaginationWrapper = ({children, currentPage, totalPages, onPrevClick, onNextClick, handleLastPage, handleFirstPage}) => {
+
+    const handlePrevClick = () => {
+        if (currentPage - 1 > 0) {
+            onPrevClick && onPrevClick(currentPage - 1)
+        }
+    }
+    const handleNextClick = () => {
+        if (currentPage + 1 <= totalPages) {
+            onNextClick && onNextClick(currentPage + 1)
+        }
+    }
+
+    const handleLastPageClick = () => {
+        handleLastPage && handleLastPage(totalPages)
+    }
+
+    const handleFirstPageClick = () => {
+        handleFirstPage && handleFirstPage(1)
+    }
+
+    return (
+        <div>
+            <button disabled={currentPage === 1} onClick={handleFirstPageClick}>first page</button>
+            <button disabled={currentPage - 1 < 1} onClick={handlePrevClick}>prev page</button>
+            <span>{currentPage} of {totalPages}</span>
+            <button disabled={currentPage + 1 > totalPages} onClick={handleNextClick}>next page</button>
+            <button disabled={currentPage === totalPages} onClick={handleLastPageClick}>last page</button>
+            {children}
+        </div>
+    )
+}
+
+
 export const Home = () => {
     const history = useHistory();
     const [moviesList, setMoviesList] = useState([]);
-    // const [genresList, setGenresList] = useState([]);
+    const [genresList, setGenresList] = useState([]);
     const [isLoading, setIsLoading] = useState(null);
+    const [movieData, setMovieData] = useState(null);
 
-    const fetchMovies = async () => {
+    const fetchMovies = async (params) => {
         try {
-            const {results, page, total_pages, total_results}  = await moviesService.getMovies();
+            const {results, page, total_pages, total_results}  = await moviesService.getMovies(params);
+            setMovieData({page, total_pages, total_results})
             // setMoviesList(results);
             return results;
         } catch(e) {
@@ -30,11 +66,11 @@ export const Home = () => {
         }
     }
 
-    const fetchMoviesData = async () => {
-        const requests = [fetchMovies(), fetchGenres()];
+    const fetchMoviesData = async (movieParams) => {
+        const requests = genresList.length ? [fetchMovies(movieParams)] : [fetchMovies(movieParams), fetchGenres()];
         try {
             setIsLoading(true);
-            const [movies, genres] = await Promise.all(requests)
+            const [movies, genres = genresList] = await Promise.all(requests)
             console.log({movies, genres}, "Promise.all([fetchMovies(), fetchGenres()])")
             const mergedWithGenresMovies = movies.map((movie) => {
                 const {genre_ids} = movie;
@@ -45,7 +81,8 @@ export const Home = () => {
                     movieGenresList,
                 }
             })
-            setMoviesList(mergedWithGenresMovies)
+            setMoviesList(mergedWithGenresMovies);
+            setGenresList(genres);
         } catch(e) {
             console.error(e);
         } finally {
@@ -65,14 +102,29 @@ export const Home = () => {
         history.push(`/movie/${film.id}`)
     }
 
+    const handlePageChange = (page) => {
+        fetchMoviesData({page})
+    }
+
     return (
     <div>
         {/*{!isLoading && !moviesList.length && 'no data found'}*/}
         {/*{true ? renderLoadingIndicator() : <FilmList/>}*/}
         {isLoading || isLoading === null ? renderLoadingIndicator() : (
+            <PaginationWrapper
+            currentPage={movieData.page}
+            totalPages={movieData.total_pages}
+            onPrevClick={handlePageChange}
+            onNextClick={handlePageChange}
+            handleLastPage={handlePageChange}
+            handleFirstPage={handlePageChange}
+            >
             <FilmList
                 onFilmClick={onFilmClick}
-                items={moviesList}/>)}
+                items={moviesList}/>
+            </PaginationWrapper>
+            )
+        }
     </div>
 )
 }
