@@ -13,7 +13,7 @@ class MoviesService {
         return data;
     }
     async getMoviesBySearch(moviePhrase) {
-        const {data} = await AXIOS.get(`/search/movie/${moviePhrase}`);
+        const {data} = await AXIOS.get(`/search/movie?query=${moviePhrase}%20`);
         return data;
         // fetch('https://api.themoviedb.org/3/search/movie?
         // api_key=a37f67097023e58bc70489149afa493b&query=Yearly%20').then(res => res.json()).then(console.log)
