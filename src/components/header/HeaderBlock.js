@@ -13,13 +13,15 @@ export const Header = () => {
         console.log(value)
     }
 
-    const getVideoBySearch = async (myInput) => {
+    const getVideoBySearch = async () => {
         try {
             // setIsLoading(true)
-            const {results} = await moviesService.getMoviesBySearch();
+            const {results} = await moviesService.getMoviesBySearch(inputData);
+            console.log('getVideoBySearch');
             console.log(results)
-            const searchedFilms = results.map(film => film.title.includes(myInput))
+            // const searchedFilms = results.map(film => film.title.includes(inputData))
             setSearchData(searchedFilms)
+            console.log('searchedFilms');
             console.log(searchedFilms)
         } catch (e) {
             console.error(e)
@@ -30,19 +32,19 @@ export const Header = () => {
         // }
     }
 
-    useEffect(() => {
-        getVideoBySearch(inputData);
-    }, [])
+    // useEffect(() => {
+    //     getVideoBySearch(inputData);
+    // }, [inputData])
 
     // if (isLoading || !searchData || isLoading === null) {
     //     return <div>loading...</div>
     // }
 
     return (
-        <form>
+        <div >
             <label>Search video</label>
             <input onInput={onInputType} type={'text'}/>
-            <button>Submit</button>
-        </form>
+            <button onClick={getVideoBySearch}>Submit</button>
+        </div>
     )
 }
