@@ -6,13 +6,11 @@ import {useDispatch, useSelector} from "react-redux";
 
 export const Header = () => {
 
-    // const [inputData, setInputData] = useState('');
-    // const [searchData, setSearchData] = useState(null);
-    // const [isLoading, setIsLoading] = useState(null);
+    // const moviesData = useSelector(({moviesData_State: {moviesData}}) => moviesData);
     const dispatch = useDispatch();
 
     const onInputType = ({target: {value}}) => {
-        dispatch({type: 'SET_INPUTDATA', payload: value})
+        dispatch({type: 'SET_INPUT_DATA', payload: value})
         console.log(value)
     }
 
@@ -21,30 +19,14 @@ export const Header = () => {
 
     const getVideoBySearch = async () => {
         try {
-            // setIsLoading(true)
             const {results} = await moviesService.getMoviesBySearch(inputData);
-            console.log('getVideoBySearch');
-            console.log(results)
-            // const searchedFilms = results.map(film => film.title.includes(inputData))
-            // setSearchData(searchedFilms)
-            // console.log('searchedFilms');
-            // console.log(searchedFilms)
+            console.log(results, 'results of search phrase')
+            dispatch({type: 'SET_MOVIES_DATA', payload: results});
         } catch (e) {
             console.error(e)
             toast.error('error occurred')
         }
-        // finally {
-        //     setIsLoading(false)
-        // }
     }
-
-    // useEffect(() => {
-    //     getVideoBySearch(inputData);
-    // }, [])
-
-    // if (isLoading || !searchData || isLoading === null) {
-    //     return <div>loading...</div>
-    // }
 
     return (
         <div >

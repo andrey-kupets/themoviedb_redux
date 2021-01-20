@@ -1,10 +1,12 @@
 const initialState = {
-    inputData: null
+    moviesData: ''
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_INPUT_DATA': return {...state, inputData: action.payload}
+        case 'SET_MOVIES_DATA': return {...state, moviesData: action.payload};
         default: return state;
     }
 }
+
+

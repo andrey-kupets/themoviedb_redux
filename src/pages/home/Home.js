@@ -3,6 +3,8 @@ import { FilmList, PaginationWrapper } from "../../components";
 import { moviesService, genresService } from "../../services";
 import styles from './Home.module.css';
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import moviesData_State from "../../redux/reducers/moviesDataReducer";
 
 const mergeMoviesWithGenres = (movies, genres) => {
     return movies.map((movie) => {
@@ -18,9 +20,13 @@ const mergeMoviesWithGenres = (movies, genres) => {
 
 export const Home = () => {
     const history = useHistory();
-    const [genresList, setGenresList] = useState([]);
-    const [isLoading, setIsLoading] = useState(null);
-    const [moviesData, setMoviesData] = useState(null);
+    // const [genresList, setGenresList] = useState([]);
+    // const [isLoading, setIsLoading] = useState(null);
+    // const [moviesData, setMoviesData] = useState(null);
+
+    const moviesData = useSelector(({moviesData_State: {moviesData}}) => moviesData);
+    const isLoading = useSelector(({isLoading_State: {isLoading}}) => isLoading)
+    const dispatch = useDispatch();
 
     const fetchMovies = (params) => {
         try {
@@ -43,15 +49,17 @@ export const Home = () => {
     const fetchMoviesData = async () => {
         const requests = [fetchMovies(), fetchGenres()];
         try {
-            setIsLoading(true);
+            dispatch({type: 'SET_IS_LOADING', payload: true});
             const [{results, ...rest}, genres] = await Promise.all(requests)
             console.log({results, genres}, "Promise.all([fetchMovies(), fetchGenres()])")
-            setMoviesData({movies: mergeMoviesWithGenres(results, genres), ...rest});
-            setGenresList(genres);
+            // setMoviesData({movies: mergeMoviesWithGenres(results, genres), ...rest});
+            dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results, genres), ...rest}});
+            dispatch({type: 'SET_GENRES_LIST', payload: genres});
+            console.log(results, 'results from home')
         } catch(e) {
             console.error(e);
         } finally {
-            setIsLoading(false);
+            dispatch({type: 'SET_IS_LOADING', payload: false});
         }
     }
 
@@ -65,10 +73,7 @@ export const Home = () => {
 
     const handlePageChange = async (page) => {
         const {results, ...rest} = await fetchMovies({page});
-        setMoviesData({
-            movies: mergeMoviesWithGenres(results, genresList),
-            ...rest
-        });
+        dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results, genresList), ...rest}});
     };
 
     return (
