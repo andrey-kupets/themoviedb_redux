@@ -4,7 +4,6 @@ import { moviesService, genresService } from "../../services";
 import styles from './Home.module.css';
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import moviesData_State from "../../redux/reducers/moviesDataReducer";
 
 const mergeMoviesWithGenres = (movies, genres) => {
     return movies.map((movie) => {
@@ -25,11 +24,14 @@ export const Home = () => {
     // const [moviesData, setMoviesData] = useState(null);
 
     const moviesData = useSelector(({moviesData_State: {moviesData}}) => moviesData);
+    const genresList = useSelector(({genresList_State: {genresList}}) => genresList);
     const isLoading = useSelector(({isLoading_State: {isLoading}}) => isLoading)
     const dispatch = useDispatch();
+
     console.log('--------------------------------------');
     console.log(moviesData);
     console.log('--------------------------------------');
+
     const fetchMovies = (params) => {
         try {
             return moviesService.getMovies(params);
@@ -53,11 +55,10 @@ export const Home = () => {
         try {
             dispatch({type: 'SET_IS_LOADING', payload: true});
             const [{results, ...rest}, genres] = await Promise.all(requests)
-            console.log({results, genres}, "Promise.all([fetchMovies(), fetchGenres()])")
-            // setMoviesData({movies: mergeMoviesWithGenres(results, genres), ...rest});
+            // console.log({results, genres}, "Promise.all([fetchMovies(), fetchGenres()])")
             dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results, genres), ...rest}});
             dispatch({type: 'SET_GENRES_LIST', payload: genres});
-            console.log(results, 'results from home')
+            // console.log(results, 'results from home')
         } catch(e) {
             console.error(e);
         } finally {
@@ -75,7 +76,7 @@ export const Home = () => {
 
     const handlePageChange = async (page) => {
         const {results, ...rest} = await fetchMovies({page});
-        dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results), ...rest}});
+        dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results, genresList), ...rest}});
     };
 
     return (

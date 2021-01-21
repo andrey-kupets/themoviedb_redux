@@ -1,7 +1,6 @@
 import React from 'react';
 import { FilmItem } from "../film-item";
 import styles from './FilmList.module.css';
-import {useSelector} from "react-redux";
 
 export const FilmList = ({items, onFilmClick}) => {
     console.log(items, 'items from FilmList');

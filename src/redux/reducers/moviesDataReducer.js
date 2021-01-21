@@ -9,8 +9,8 @@ export default (state = initialState, action) => {
             console.log(action);
             return {...state, moviesData: action.payload}
         }
-        case 'SET_NEW_DATA': {
-            console.log('SET_NEW_DATA');
+        case 'SET_NEW_DATA_IN_MOVIES': {
+            console.log('SET_NEW_DATA_IN_MOVIES');
             console.log(action);
             return {...state, moviesData: {...state.moviesData, movies: action.payload}}
             // return {state: {moviesData: {movies: action.payload}}}
