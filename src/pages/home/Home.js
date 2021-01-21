@@ -27,7 +27,9 @@ export const Home = () => {
     const moviesData = useSelector(({moviesData_State: {moviesData}}) => moviesData);
     const isLoading = useSelector(({isLoading_State: {isLoading}}) => isLoading)
     const dispatch = useDispatch();
-
+    console.log('--------------------------------------');
+    console.log(moviesData);
+    console.log('--------------------------------------');
     const fetchMovies = (params) => {
         try {
             return moviesService.getMovies(params);
@@ -73,7 +75,7 @@ export const Home = () => {
 
     const handlePageChange = async (page) => {
         const {results, ...rest} = await fetchMovies({page});
-        dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results, genresList), ...rest}});
+        dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results), ...rest}});
     };
 
     return (
