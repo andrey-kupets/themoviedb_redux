@@ -20,7 +20,7 @@ export const Header = () => {
         try {
             const {results} = await moviesService.getMoviesBySearch(inputData);
             console.log(results, 'results of search phrase')
-            dispatch({type: 'SET_NEW_DATA_IN_MOVIES', payload: results});
+            // dispatch({type: 'SET_NEW_DATA_IN_MOVIES', payload: results});
         } catch (e) {
             console.error(e)
             toast.error('error occurred')
