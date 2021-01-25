@@ -24,7 +24,7 @@ export const Home = () => {
     // const [moviesData, setMoviesData] = useState(null);
 
     const moviesData = useSelector(({moviesData_State: {moviesData}}) => moviesData);
-    // const genresList = useSelector(({genresList_State: {genresList}}) => genresList);
+    const genresList = useSelector(({genresList_State: {genresList}}) => genresList);
     const isLoading = useSelector(({isLoading_State: {isLoading}}) => isLoading)
     const dispatch = useDispatch();
 
@@ -76,8 +76,7 @@ export const Home = () => {
 
     const handlePageChange = async (page) => {
         const {results, ...rest} = await fetchMovies({page});
-        dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results), ...rest}});
-    };
+        dispatch({type: 'SET_MOVIES_DATA', payload: {movies: mergeMoviesWithGenres(results, genresList), ...rest}});    };
 
     return (
         <div>
