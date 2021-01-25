@@ -19,7 +19,7 @@ export const FilmItem = (props) => {
     // vote_average: 7.2
     // vote_count: 2598
 
-    const {original_title, overview, release_date, vote_average, vote_count, poster_path, movieGenresList} = props;
+    const {original_title, overview, release_date, vote_average, vote_count, poster_path, movieGenresList =[]} = props;
     return (
         <div className={styles.filmItem}>
             <div style={{
