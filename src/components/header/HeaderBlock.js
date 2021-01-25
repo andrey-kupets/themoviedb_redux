@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {moviesService} from "../../services";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 export const Header = () => {
 
     const dispatch = useDispatch();
+    const moviesData = useSelector(({moviesData_State: {moviesData}}) => moviesData);
 
     const onInputType = ({target: {value}}) => {
         dispatch({type: 'SET_INPUT_DATA', payload: value})
@@ -20,7 +21,12 @@ export const Header = () => {
         try {
             const {results} = await moviesService.getMoviesBySearch(inputData);
             console.log(results, 'results of search phrase')
-            // dispatch({type: 'SET_NEW_DATA_IN_MOVIES', payload: results});
+            moviesData.movies = results;
+            dispatch({type: 'SET_IS_LOADING', payload: true});
+            dispatch({type: 'SET_MOVIES_DATA', payload: moviesData});
+            setTimeout(() =>{
+                dispatch({type: 'SET_IS_LOADING', payload: false});
+            },3000)
         } catch (e) {
             console.error(e)
             toast.error('error occurred')
